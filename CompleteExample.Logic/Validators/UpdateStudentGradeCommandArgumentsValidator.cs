@@ -23,6 +23,13 @@ namespace CompleteExample.Logic.Validators
                 })
             .WithMessage("Student must exist.");
 
+            RuleFor(x => x)
+               .Must(enrollment =>
+               {
+                   return context.Enrollment.Any(x => x.CourseId == enrollment.CourseId && x.StudentId == enrollment.StudentId);
+               })
+           .WithMessage("The student is not registered for that course.");
+
             RuleFor(x => x.Grade).ScalePrecision(2, 5);
 
             RuleFor(x => x.Grade).GreaterThanOrEqualTo(0);

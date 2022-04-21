@@ -1,21 +1,15 @@
 using NUnit.Framework;
 using System.Threading.Tasks;
 using CompleteExample.Logic.Validators;
-using Moq;
 using CompleteExample.Entities;
 using FluentValidation.TestHelper;
 using CompleteExample.Logic.Queries;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Data.Entity;
 
 namespace CompleteExample.Logic.Tests
 {
     public class GetStudentsGradesByInstructorQueryArgumentsValidatorTest
     {
-        private GetStudentsGradesByInstructorQueryArgumentsValidator cut;
-
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
@@ -28,25 +22,48 @@ namespace CompleteExample.Logic.Tests
         }
 
         [Test]
-        public async Task Test()
+        public async Task Instructor_Exist_No_Errors_Are_Shown()
         {
             // Arrange
-            var completeExampleDBContext = new Mock<ICompleteExampleDBContext>();
-
-            var data = new List<Instructor>
+            var args = new GetStudentsGradesByInstructorQuery.Arguments()
             {
-                new Instructor { InstructorId = 1 },
-                new Instructor { InstructorId = 2 },
-                new Instructor { InstructorId = 3 },
-            }.AsQueryable();
-                       
-            var args = new GetStudentsGradesByInstructorQuery.Arguments() { };
+                InstructorId = 50,
+            };
+
+            using var factory = new SampleDbContextFactory();
+            using var context = factory.CreateContext();
+            var instructor = new Instructor() { InstructorId = 50, Email = "test@sample.com" };
+            context.Instructors.Add(instructor);
+            await context.SaveChangesAsync();
 
             // Act
-            var result = new GetStudentsGradesByInstructorQueryArgumentsValidator(completeExampleDBContext.Object).TestValidate(args);
+            var result = new GetStudentsGradesByInstructorQueryArgumentsValidator(context).TestValidate(args);
 
             // Assert
             result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Test]
+        public async Task Instructor_Not_Exist_Error_Is_Shown()
+        {
+            // Arrange
+            var args = new GetStudentsGradesByInstructorQuery.Arguments()
+            {
+                InstructorId = 40,
+            };
+
+            using var factory = new SampleDbContextFactory();
+            using var context = factory.CreateContext();
+            var instructor = new Instructor() { InstructorId = 50, Email = "test@sample.com" };
+            context.Instructors.Add(instructor);
+            await context.SaveChangesAsync();
+
+            // Act
+            var result = new GetStudentsGradesByInstructorQueryArgumentsValidator(context).TestValidate(args);
+
+            // Assert
+            Assert.IsTrue(result.Errors.Any());
+            result.ShouldHaveValidationErrorFor(x => x.InstructorId).WithErrorMessage("Instructor must exist.");
         }
     }
 }
