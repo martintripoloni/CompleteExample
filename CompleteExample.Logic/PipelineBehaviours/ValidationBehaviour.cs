@@ -7,6 +7,7 @@ using MediatR;
 
 namespace CompleteExample.Logic.PipelineBehaviours
 {
+    //Considered it as out of the scope of the challenge but this class should be tested.
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {

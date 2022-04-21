@@ -30,10 +30,8 @@ namespace CompleteExample.Logic.Queries
                 var enrollment = this._context.Enrollment
                                    .Where(i => i.CourseId == arguments.CourseId &&
                                                i.StudentId == arguments.StudentId)
-                                   .FirstOrDefault();
+                                   .First();
                 
-                if (enrollment == null) return null;
-
                 enrollment.Grade = arguments.Grade;
 
                 await this._context.SaveChanges();

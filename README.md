@@ -24,3 +24,16 @@ Create API endpoints that return all columns that do the following:
 
 * Modify the databse to allow for the storage of students' historical grades.
 * Setup a postman collection that calls each one of the endpoints.
+
+# Notes to the evaluator 
+
+## Prerequisites
+* Run the script -> Solution Items -> CreateEnrollmentHistoryTableAndTrigger.sql
+
+This script will create a new table and a trigger to achieve the stretch goal: Modify the databse to allow for the storage of students' historical grades.
+
+* Import the Postman Environment -> Solution Items -> Eyrus Challenge.postman_environment.json
+
+* Import the Postman Collection -> Solution Items -> Eyrus Challenge.postman_collection.json
+
+This script will create a new table and a trigger to achieve the stretch goal: Setup a postman collection that calls each one of the endpoints.

@@ -1,0 +1,121 @@
+{
+	"id": "18e4b0c9-8b44-904c-493a-6273f2aa6f12",
+	"name": "Eyrus Challenge",
+	"description": "",
+	"order": [
+		"1df10269-605c-a23e-9325-8a892d54023d",
+		"9d9dc37e-c6bd-3c13-0d75-2fdc61a55f2a",
+		"f0b4a61e-e564-c50f-40a4-5587bdfa00d9",
+		"5e00e8f0-15c2-6af4-4031-1a5dbd4f4fe7"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1650415643598,
+	"owner": "15641777",
+	"public": false,
+	"requests": [
+		{
+			"id": "1df10269-605c-a23e-9325-8a892d54023d",
+			"headers": "",
+			"headerData": [],
+			"url": "{{Url}}/api/instructors/{{InstructractorId}}/students-grades",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1650568994970,
+			"name": "01 - StudentsGradesByInstructractorId",
+			"description": "For a particular instructor, list all the students' grades the instructor has given out.\r\n",
+			"collectionId": "18e4b0c9-8b44-904c-493a-6273f2aa6f12",
+			"responses": []
+		},
+		{
+			"id": "5e00e8f0-15c2-6af4-4031-1a5dbd4f4fe7",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{Url}}/api/enrollments",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1650569007123,
+			"name": "04 - Update a grade(number) for a student for a course",
+			"description": "Update a grade(number) for a student for a course\r\n",
+			"collectionId": "18e4b0c9-8b44-904c-493a-6273f2aa6f12",
+			"responses": [],
+			"rawModeData": "{\n\t\"StudentId\": {{StudentId}},\n\t\"CourseId\": {{CourseId}},\n\t\"Grade\": {{Grade}}\n}"
+		},
+		{
+			"id": "9d9dc37e-c6bd-3c13-0d75-2fdc61a55f2a",
+			"headers": "",
+			"headerData": [],
+			"url": "{{Url}}/api/courses/top-grades",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1650568999674,
+			"name": "02 - List all students that have the top 3 grades for each course",
+			"description": "List all students that have the top 3 grades for each course.",
+			"collectionId": "18e4b0c9-8b44-904c-493a-6273f2aa6f12",
+			"responses": []
+		},
+		{
+			"id": "f0b4a61e-e564-c50f-40a4-5587bdfa00d9",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{Url}}/api/enrollments",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1650569003594,
+			"name": "03 - Enroll a student in a course",
+			"description": "Enroll a student in a course",
+			"collectionId": "18e4b0c9-8b44-904c-493a-6273f2aa6f12",
+			"responses": [],
+			"rawModeData": "{\n\t\"StudentId\": {{StudentId}},\n\t\"CourseId\": {{CourseId}}\n}"
+		}
+	]
+}

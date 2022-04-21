@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Globalization;
 using System.Reflection;
 
 namespace CompleteExample.API
@@ -41,6 +42,8 @@ namespace CompleteExample.API
             {
                 options.Filters.Add<CustomExceptionFilterAttribute>();
             });
+
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,7 +18,7 @@ namespace CompleteExample.API.Controllers
         /// <summary>
         /// Enroll a student in a course
         /// </summary>
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> Enroll(EnrollStudentCourseCommand.Arguments arguments)
         {
             return Ok(await this._mediator.Send(arguments));
@@ -27,7 +27,7 @@ namespace CompleteExample.API.Controllers
         /// <summary>
         /// Update a grade(number) for a student for a course
         /// </summary>
-        [HttpPut()]
+        [HttpPut]
         public async Task<IActionResult> UpdateGrade(UpdateStudentGradeCommand.Arguments arguments)
         {
             return Ok(await this._mediator.Send(arguments));

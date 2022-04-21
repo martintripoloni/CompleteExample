@@ -1,8 +1,6 @@
 ﻿using CompleteExample.Entities;
 using NUnit.Framework;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 using CompleteExample.Logic.Queries;
 using System.Threading;
 using System.Linq;

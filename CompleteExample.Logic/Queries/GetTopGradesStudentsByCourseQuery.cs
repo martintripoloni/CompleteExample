@@ -44,7 +44,7 @@ namespace CompleteExample.Logic.Queries
                 //According to the scope of the challenge, I kept it simple but thinking of escalating it out(and I really don't know if
                 //the exercise allowed creating new layers) I would create a CompleteExample.Infrastructure layer where I would put Readers and Writers,
                 //moving the data access logic.
-                var coruseNotes = this._context.Courses
+                var coursesNotes = this._context.Courses
                                 .Include(x => x.Enrollments)
                                 .Include("Enrollments.Student")
                                 .Select(x => new
@@ -53,7 +53,7 @@ namespace CompleteExample.Logic.Queries
                                      Grades = x.Enrollments.Where(y => y.Grade.HasValue).Select(y => y.Grade).ToList()
                                  }).ToList();
 
-                foreach (var courseNotes in coruseNotes)
+                foreach (var courseNotes in coursesNotes)
                 {
                     var notes = courseNotes.Grades.Distinct().OrderByDescending(x => x).ToList();
 

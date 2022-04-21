@@ -9,6 +9,7 @@ namespace CompleteExample.API.ExceptionFilter
 {
     public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
     {
+        //Considered it as out of the scope of the challenge but this class should be tested.
         public override void OnException(ExceptionContext context)
         {
             var problemDetailsFactory = context.HttpContext.RequestServices.GetService<ProblemDetailsFactory>();
