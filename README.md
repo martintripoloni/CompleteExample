@@ -35,3 +35,5 @@ This script will create a new table and a trigger to achieve the stretch goal: M
 * Import the Postman Environment -> Solution Items -> Eyrus Challenge.postman_environment.json
 
 * Import the Postman Collection -> Solution Items -> Eyrus Challenge.postman_collection.json
+
+* I added some comments in the code to clarify my assumptions about the scope of this challenge.
