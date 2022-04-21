@@ -2,7 +2,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Data.Common;
 
 namespace CompleteExample.Logic.Tests
 {

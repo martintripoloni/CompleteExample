@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace CompleteExample.Logic.Tests
 {
-    public class EnrollStudentCourseCommandArgumentsValidatorTest
+    public class UpdateStudentGradeCommandArgumentsValidatorTest
     {
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
@@ -22,13 +22,14 @@ namespace CompleteExample.Logic.Tests
         }
 
         [Test]
-        public async Task Course_And_Student_Exist_No_Errors_Are_Shown()
+        public async Task All_Data_Is_Valid_No_Errors_Are_Shown()
         {
             // Arrange
-            var args = new EnrollStudentCourseCommand.Arguments()
+            var args = new UpdateStudentGradeCommand.Arguments()
             {
                 CourseId = 50,
-                StudentId = 2
+                StudentId = 2,
+                Grade = 100,
             };
 
             using var factory = new SampleDbContextFactory();
@@ -43,10 +44,13 @@ namespace CompleteExample.Logic.Tests
             var student = new Student() { StudentId = 2 };
             context.Students.Add(student);
 
+            var enrollment = new Enrollment() { StudentId = 2, CourseId = 50 };
+            context.Enrollment.Add(enrollment);
+
             await context.SaveChangesAsync();
 
             // Act
-            var result = new EnrollStudentCourseCommandArgumentsValidator(context).TestValidate(args);
+            var result = new UpdateStudentGradeCommandArgumentsValidator(context).TestValidate(args);
 
             // Assert
             result.ShouldNotHaveAnyValidationErrors();
@@ -56,10 +60,11 @@ namespace CompleteExample.Logic.Tests
         public async Task Course_Not_Exist_Error_Is_Shown()
         {
             // Arrange
-            var args = new EnrollStudentCourseCommand.Arguments()
+            var args = new UpdateStudentGradeCommand.Arguments()
             {
                 CourseId = 50,
-                StudentId = 2
+                StudentId = 2,
+                Grade = 100,
             };
 
             using var factory = new SampleDbContextFactory();
@@ -77,7 +82,7 @@ namespace CompleteExample.Logic.Tests
             await context.SaveChangesAsync();
 
             // Act
-            var result = new EnrollStudentCourseCommandArgumentsValidator(context).TestValidate(args);
+            var result = new UpdateStudentGradeCommandArgumentsValidator(context).TestValidate(args);
 
             // Assert
             Assert.IsTrue(result.Errors.Any());
@@ -88,10 +93,11 @@ namespace CompleteExample.Logic.Tests
         public async Task Student_Not_Exist_Error_Is_Shown()
         {
             // Arrange
-            var args = new EnrollStudentCourseCommand.Arguments()
+            var args = new UpdateStudentGradeCommand.Arguments()
             {
                 CourseId = 50,
-                StudentId = 2
+                StudentId = 2,
+                Grade = 100,
             };
 
             using var factory = new SampleDbContextFactory();
@@ -109,7 +115,7 @@ namespace CompleteExample.Logic.Tests
             await context.SaveChangesAsync();
 
             // Act
-            var result = new EnrollStudentCourseCommandArgumentsValidator(context).TestValidate(args);
+            var result = new UpdateStudentGradeCommandArgumentsValidator(context).TestValidate(args);
 
             // Assert
             Assert.IsTrue(result.Errors.Any());
@@ -117,13 +123,14 @@ namespace CompleteExample.Logic.Tests
         }
 
         [Test]
-        public async Task Student_Is_Registered_In_Course_Error_Is_Shown()
+        public async Task Student_Is_Not_Registered_In_Course_Error_Is_Shown()
         {
             // Arrange
-            var args = new EnrollStudentCourseCommand.Arguments()
+            var args = new UpdateStudentGradeCommand.Arguments()
             {
                 CourseId = 50,
-                StudentId = 3
+                StudentId = 3,
+                Grade = 100,
             };
 
             using var factory = new SampleDbContextFactory();
@@ -132,23 +139,26 @@ namespace CompleteExample.Logic.Tests
             var instructor = new Instructor() { InstructorId = 1, Email = "test@sample.com" };
             context.Instructors.Add(instructor);
 
-            var course = new Course() { CourseId = 50, InstructorId = instructor.InstructorId, Credits = 20 };
+            var course = new Course() { CourseId = 51, InstructorId = instructor.InstructorId, Credits = 20 };
             context.Courses.Add(course);
 
             var student = new Student() { StudentId = 3 };
             context.Students.Add(student);
 
-            var enrollment = new Enrollment() { StudentId = 3, CourseId = 50 };
+            var otherStudent = new Student() { StudentId = 4 };
+            context.Students.Add(otherStudent);
+
+            var enrollment = new Enrollment() { StudentId = 4, CourseId = 51 };
             context.Enrollment.Add(enrollment);
 
             await context.SaveChangesAsync();
 
             // Act
-            var result = new EnrollStudentCourseCommandArgumentsValidator(context).TestValidate(args);
+            var result = new UpdateStudentGradeCommandArgumentsValidator(context).TestValidate(args);
 
             // Assert
             Assert.IsTrue(result.Errors.Any());
-            result.ShouldHaveValidationErrorFor(x => x).WithErrorMessage("The student is already registered for that course.");
+            result.ShouldHaveValidationErrorFor(x => x).WithErrorMessage("The student is not registered for that course.");
         }
     }
 }
