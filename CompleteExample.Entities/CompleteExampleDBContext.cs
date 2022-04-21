@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace CompleteExample.Entities
 {
-    public class CompleteExampleDBContext : DbContext
+    public class CompleteExampleDBContext : DbContext, ICompleteExampleDBContext
     {
 
         public CompleteExampleDBContext(DbContextOptions<CompleteExampleDBContext> options) : base(options) { }
+
+        public async Task<int> SaveChanges()
+        {
+            return await base.SaveChangesAsync();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,9 @@ namespace CompleteExample.Entities
 
             modelBuilder.Entity<Instructor>()
                 .ToTable("Instructors", schema: "dbo");
+            
+            modelBuilder.Entity<EnrollmentHistory>()
+                .ToTable("EnrollmentHistory", schema: "dbo");
 
             base.OnModelCreating(modelBuilder);
         }
@@ -34,6 +38,7 @@ namespace CompleteExample.Entities
         public DbSet<Student> Students { get; set; }
         public DbSet<Enrollment> Enrollment { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<EnrollmentHistory> EnrollmentHistories { get; set; }
 
     }
 }

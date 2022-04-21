@@ -1,18 +1,15 @@
+using CompleteExample.API.ExceptionFilter;
 using CompleteExample.Entities;
+using CompleteExample.Logic.PipelineBehaviours;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace CompleteExample.API
 {
@@ -28,10 +25,22 @@ namespace CompleteExample.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
             services.AddDbContext<CompleteExampleDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+
+            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(Logic.Assy).Assembly);
+
+            services.AddScoped<ICompleteExampleDBContext>(provider => provider.GetService<CompleteExampleDBContext>());
+
+            AssemblyScanner.FindValidatorsInAssembly(typeof(Logic.Assy).Assembly)
+                .ForEach(x => services.AddScoped(x.InterfaceType, x.ValidatorType));
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<CustomExceptionFilterAttribute>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
